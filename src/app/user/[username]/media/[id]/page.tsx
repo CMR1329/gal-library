@@ -33,7 +33,7 @@ export default async function PublicMediaPage({ params }: { params: Promise<{ us
   const references = entry.media.externalReferences.map((reference) => `${reference.source}:${reference.externalId}`).join(" · ");
 
   return <div className="space-y-6">
-    <Link href={profilePath} className="inline-flex items-center gap-2 text-sm text-slate-500 hover:text-white"><ArrowLeft className="size-4" />返回 {user.displayName || user.name || decodedUsername} 的主页</Link>
+    <Link href={profilePath} className="inline-flex items-center gap-2 text-sm text-slate-500 hover:text-white"><ArrowLeft className="size-4" />返回 {user.username || decodedUsername} 的主页</Link>
     <section className="surface relative overflow-hidden">
       <div className="absolute inset-x-0 top-0 h-72">{entry.media.bannerUrl && <CoverImage src={entry.media.bannerUrl} alt="" className="size-full opacity-25 blur-sm" />}<div className="hero-overlay absolute inset-0" /></div>
       <div className="relative flex flex-col gap-7 p-5 pt-10 sm:flex-row sm:p-8 sm:pt-20">

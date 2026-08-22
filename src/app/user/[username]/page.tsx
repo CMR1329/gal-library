@@ -40,7 +40,7 @@ export default async function PublicProfilePage({ params, searchParams }: { para
     inProgress: allEntries.filter((entry) => entry.status === "IN_PROGRESS").length,
     planned: allEntries.filter((entry) => entry.status === "PLANNED").length,
   };
-  const displayName = user.displayName || user.name || user.username || decodedUsername;
+  const displayName = user.username || decodedUsername;
   const publicHandle = user.username || decodedUsername;
   const profilePath = `/user/${encodeURIComponent(publicHandle)}`;
   const query = new URLSearchParams();

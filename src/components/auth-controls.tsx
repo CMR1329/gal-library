@@ -11,7 +11,7 @@ export function AuthControls() {
   if (isPending) return <LoaderCircle className="mx-2 size-4 animate-spin text-slate-600" />;
   if (!session) return <Link href="/login" className="nav-link"><LogIn className="size-4" /><span className="hidden sm:inline">登录</span></Link>;
   const profile = session.user as { username?: string | null; image?: string | null; avatarUrl?: string | null; name?: string | null };
-  const username = profile.name || profile.username || "我的主页";
+  const username = profile.username || profile.name || "我的主页";
   const publicHandle = profile.username;
   const avatar = profile.image || profile.avatarUrl;
   return <div className="flex items-center gap-1">{publicHandle && <Link href={`/user/${encodeURIComponent(publicHandle)}`} className="nav-link max-w-44" title="打开我的主页"><span className="grid size-6 shrink-0 place-items-center overflow-hidden rounded-full bg-violet-500/15 text-violet-300">{avatar ? (

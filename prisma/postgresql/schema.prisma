@@ -1,0 +1,189 @@
+generator client {
+  provider = "prisma-client-js"
+  output   = "../../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Media {
+  id String @id @default(cuid())
+  mediaType String
+  title String
+  titleCn String?
+  titleCnSource String?
+  originalTitle String?
+  alternateTitles String @default("[]")
+  coverUrl String?
+  bannerUrl String?
+  description String?
+  releaseDate String?
+  endDate String?
+  releaseYear Int?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  externalMetadata ExternalMetadata?
+  externalReferences ExternalReference[]
+  userEntries UserEntry[]
+  @@index([mediaType])
+  @@index([title])
+  @@index([titleCn])
+  @@index([releaseYear])
+}
+
+model User {
+  id String @id
+  username String? @unique
+  name String?
+  displayName String?
+  email String? @unique
+  emailVerified Boolean @default(false)
+  image String?
+  passwordHash String?
+  avatarUrl String?
+  profileVisibility String @default("PRIVATE")
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  entries UserEntry[]
+  tags Tag[]
+  sessions Session[]
+  accounts Account[]
+}
+
+model Session {
+  id String @id
+  expiresAt DateTime
+  token String @unique
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  ipAddress String?
+  userAgent String?
+  userId String
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  @@index([userId])
+}
+
+model Account {
+  id String @id
+  issuer String
+  accountId String
+  providerId String
+  userId String
+  accessToken String?
+  refreshToken String?
+  idToken String?
+  accessTokenExpiresAt DateTime?
+  refreshTokenExpiresAt DateTime?
+  scope String?
+  password String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  @@unique([issuer, accountId])
+  @@index([userId])
+}
+
+model Verification {
+  id String @id
+  identifier String
+  value String
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  @@index([identifier])
+}
+
+model ExternalMetadata {
+  id String @id @default(cuid())
+  mediaId String @unique
+  source String
+  externalId String
+  schemaVersion Int @default(1)
+  metadataJson String @default("{}")
+  rawJson String?
+  syncedAt DateTime @default(now())
+  media Media @relation(fields: [mediaId], references: [id], onDelete: Cascade)
+  @@unique([source, externalId])
+  @@index([source])
+}
+
+model ExternalReference {
+  id String @id @default(cuid())
+  mediaId String
+  source String
+  externalId String
+  createdAt DateTime @default(now())
+  media Media @relation(fields: [mediaId], references: [id], onDelete: Cascade)
+  @@unique([source, externalId])
+  @@index([mediaId])
+}
+
+model UserEntry {
+  id String @id @default(cuid())
+  userId String
+  mediaId String
+  status String @default("PLANNED")
+  score Float?
+  progressCurrent Int?
+  progressTotal Int?
+  progressText String?
+  startedAt String?
+  completedAt String?
+  activityYear Int?
+  rewatchCount Int @default(0)
+  plannedRewatch Boolean @default(false)
+  playtimeMinutes Int?
+  completedAllRoutes Boolean @default(false)
+  notes String?
+  customDataJson String @default("{}")
+  addedAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  media Media @relation(fields: [mediaId], references: [id], onDelete: Cascade)
+  tags UserEntryTag[]
+  routes RouteProgress[]
+  @@unique([userId, mediaId])
+  @@index([status])
+  @@index([score])
+  @@index([addedAt])
+  @@index([completedAt])
+  @@index([userId, activityYear])
+  @@index([userId, status])
+}
+
+model Tag {
+  id String @id @default(cuid())
+  userId String
+  name String
+  visibility String @default("PRIVATE")
+  createdAt DateTime @default(now())
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  entries UserEntryTag[]
+  @@unique([userId, name])
+  @@index([userId])
+}
+
+model UserEntryTag {
+  userEntryId String
+  tagId String
+  userEntry UserEntry @relation(fields: [userEntryId], references: [id], onDelete: Cascade)
+  tag Tag @relation(fields: [tagId], references: [id], onDelete: Cascade)
+  @@id([userEntryId, tagId])
+}
+
+model RouteProgress {
+  id String @id @default(cuid())
+  userEntryId String
+  name String
+  completed Boolean @default(false)
+  completedAt String?
+  notes String?
+  sortOrder Int @default(0)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  userEntry UserEntry @relation(fields: [userEntryId], references: [id], onDelete: Cascade)
+  @@unique([userEntryId, name])
+  @@index([userEntryId, sortOrder])
+}

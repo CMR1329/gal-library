@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 680">
+  <defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#1c2230"/><stop offset="1" stop-color="#10141d"/></linearGradient></defs>
+  <rect width="480" height="680" fill="url(#g)"/>
+  <circle cx="240" cy="300" r="66" fill="none" stroke="#596277" stroke-width="9" opacity=".6"/>
+  <path d="M214 275h52v67h-52zM214 289h52" fill="none" stroke="#8b93a6" stroke-width="8" stroke-linejoin="round" opacity=".7"/>
+  <text x="240" y="420" text-anchor="middle" fill="#6f788a" font-family="Arial,sans-serif" font-size="24" letter-spacing="4">NO COVER</text>
+</svg>

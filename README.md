@@ -1,4 +1,4 @@
-# 夜栞（Yoru Library）
+#
 
 Anime 与 Galgame / Visual Novel 私人收藏数据库。公共作品资料可由 Bangumi、AniList 与 VNDB 提供；评分、状态、进度、标签、Route 和笔记保存在 `DATABASE_URL` 指向的数据库，并按登录账号严格隔离。
 

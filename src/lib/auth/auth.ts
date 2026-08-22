@@ -5,7 +5,11 @@ import { db } from "@/lib/db";
 
 export function createAuth(database: PrismaClient) {
   return betterAuth({
-  database: prismaAdapter(database, { provider: "sqlite" }),
+  database: prismaAdapter(database, {
+    provider: process.env.DATABASE_URL?.startsWith("postgres")
+      ? "postgresql"
+      : "sqlite",
+  }),
   emailAndPassword: {
     enabled: true,
     minPasswordLength: 8,

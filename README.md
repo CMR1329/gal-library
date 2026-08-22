@@ -56,6 +56,12 @@ pnpm db:migrate
 pnpm db:studio
 ```
 
+## Vercel 部署
+
+仓库根目录的 `vercel.json` 固定使用 Next.js Framework Preset、`pnpm vercel-build` 和 Next.js 默认输出目录。生产构建会在完成后检查 `.next` 清单，确认 `/api/auth/[...all]` 已生成 App Route、动态路由和 Server Function；缺少任意一项时部署会直接失败。
+
+Vercel 项目的 Root Directory 应保持为仓库根目录。部署完成后可访问 `/api/auth/get-session` 验证认证路由；未登录时正常响应为 `200` 和 `null`，而不是 `404`。
+
 ## 数据模型
 
 - `Media`：共享作品资料，包含 `titleCn` 与多标题 JSON。

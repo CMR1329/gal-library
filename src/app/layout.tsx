@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { Analytics } from "@vercel/analytics/next";
 import "./globals.css";
 import { Nav } from "@/components/nav";
 import { ThemeProvider } from "@/components/theme-provider";
@@ -15,6 +16,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
       <head><script dangerouslySetInnerHTML={{ __html: `(()=>{try{const t=localStorage.getItem('blueshan-theme');if(t)document.documentElement.dataset.theme=t}catch{}})()` }} /></head>
       <body>
         <ThemeProvider><Nav /><main className="mx-auto min-h-[calc(100vh-4rem)] max-w-7xl px-4 py-8 sm:px-6 lg:py-11">{children}</main><ThemeSwitcher /></ThemeProvider>
+        <Analytics />
       </body>
     </html>
   );

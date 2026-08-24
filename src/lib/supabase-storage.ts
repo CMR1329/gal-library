@@ -56,7 +56,11 @@ export async function uploadBackgroundImage(file: File) {
     },
     body: file,
   });
-  if (!response.ok) throw new Error(`上传背景图片失败（Storage ${response.status}）。`);
+  if (!response.ok) {
+  const errorText = await response.text();
+  console.error("Supabase Storage Error:", response.status, errorText);
+  throw new Error(`上传失败 ${response.status}: ${errorText}`);
+}
 
   const encodedPath = path.split("/").map(encodeURIComponent).join("/");
   return {

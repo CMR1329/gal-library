@@ -19,6 +19,8 @@ export function createAuth(database: PrismaClient) {
     additionalFields: {
       // 兼容现有 User.username 非空列；登录身份仍以唯一 email 为准。
       username: { type: "string", required: true, input: true, unique: true },
+      // 权限只能由受保护的管理员业务接口或人工 SQL 修改。
+      role: { type: "string", required: false, input: false, returned: false, defaultValue: "user" },
     },
   },
   session: {

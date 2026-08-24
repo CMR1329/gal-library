@@ -46,13 +46,40 @@ model User {
   passwordHash      String?
   avatarUrl         String?
   profileVisibility String   @default("PRIVATE")
+  role              String   @default("user")
   createdAt         DateTime @default(now())
   updatedAt         DateTime @updatedAt
 
-  entries UserEntry[]
-  tags    Tag[]
-  sessions Session[]
-  accounts Account[]
+  entries   UserEntry[]
+  tags      Tag[]
+  sessions  Session[]
+  accounts  Account[]
+  adminLogs AdminLog[] @relation("AdminLogActor")
+
+  @@index([role])
+}
+
+model AdminLog {
+  id          String   @id @default(cuid())
+  actorUserId String
+  action      String
+  targetType  String
+  targetId    String?
+  detailsJson String   @default("{}")
+  createdAt   DateTime @default(now())
+
+  actor User @relation("AdminLogActor", fields: [actorUserId], references: [id], onDelete: Restrict)
+
+  @@index([actorUserId, createdAt])
+  @@index([action, createdAt])
+  @@index([targetType, targetId])
+}
+
+model SiteSettings {
+  id                 String   @id @default("global")
+  backgroundImageUrl String?
+  createdAt          DateTime @default(now())
+  updatedAt          DateTime @updatedAt
 }
 
 model Session {

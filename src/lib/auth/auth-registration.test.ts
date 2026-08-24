@@ -41,6 +41,7 @@ describe("Better Auth registration", () => {
     } });
 
     expect(result.user.email).toBe("registration@test.invalid");
+    expect((await client.user.findUniqueOrThrow({ where: { id: result.user.id }, select: { role: true } })).role).toBe("user");
     expect(await client.userEntry.count({ where: { userId: result.user.id } })).toBe(0);
   });
 });

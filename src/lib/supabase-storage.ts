@@ -22,6 +22,7 @@ function storageConfiguration() {
 }
 
 function objectUrl(baseUrl: string, bucket: string, path: string) {
+  console.log("Storage URL:", `${baseUrl}/storage/v1/object/${bucket}/${path}`);
   const encodedPath = path.split("/").map(encodeURIComponent).join("/");
   return `${baseUrl}/storage/v1/object/${encodeURIComponent(bucket)}/${encodedPath}`;
 }
